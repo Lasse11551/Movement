@@ -169,10 +169,30 @@ function movePlayer(deltaTime) {
   }
 }
 
+function pickupItems(player) {
+  // Convert player's current position to grid coordinates
+  const playerPos = coordFromPos({x: player.x, y: player.y});
+
+  items.forEach(item => {
+    if (playerPos.row === item.row && playerPos.col === item.col && !item.pickedUp) {
+      console.log("Virker")
+      item.pickedUp = true;  // Mark the item as picked up
+      displayItems();
+    }
+  });
+}
+
 /* view */
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'e' || event.key === 'E') {  // Check if 'e' or 'E' was pressed
+    pickupItems(player);  // Call your pickup function
+  }
+});
 
 function displayItems() {
   const itemsContainer = document.querySelector('#items');
+  itemsContainer.innerHTML = "";
   itemsContainer.style.setProperty("--GRID_WIDTH", GRID_WIDTH);
   itemsContainer.style.setProperty("--GRID_HEIGHT", GRID_HEIGHT);
   itemsContainer.style.setProperty("--TILE_SIZE", TILE_SIZE + "px");
