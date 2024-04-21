@@ -50,7 +50,7 @@
     position: absolute;
     width: 30px;
     aspect-ratio: 16 / 20;
-    background-image: url('Characters/Character\ 5.png');
+    background-image: url('Characters/Character\ 11.png');
     background-size: 400% 400%;
     image-rendering: pixelated;
     z-index: 2;
@@ -155,5 +155,22 @@
   .item.gold {
     background-image: url('Characters/items/gold.png');
   }
+
+  #characters{
+    grid-area: 1/1;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--GRID_WIDTH), var(--TILE_SIZE));
+    grid-template-rows: repeat(var(--GRID_HEIGHT), var(--TILE_SIZE));
+    image-rendering: pixelated;
+    z-index: 1;
+}
+
+.enemy.blop{
+    background-image: url('/Characters/character/enemies.png');
+    background-size: 1100% 400%;
+    image-rendering: pixelated;
+}
 
 

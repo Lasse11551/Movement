@@ -34,7 +34,9 @@ const items = [
 ];
 
 const enemies = [
-
+{ type: 'blop', row: 7, col: 8 },
+{ type: 'blop', row: 3, col: 13 },
+{ type: 'blop', row: 7, col: 5 }
 ];
 
 const tiles = [
@@ -188,6 +190,21 @@ function pickupItems(player) {
 
 /* view */
 
+function displayEnemies() {
+  const itemsContainer = document.querySelector('#characters');
+  itemsContainer.style.setProperty("--GRID_WIDTH", GRID_WIDTH);
+  itemsContainer.style.setProperty("--GRID_HEIGHT", GRID_HEIGHT);
+  itemsContainer.style.setProperty("--TILE_SIZE", TILE_SIZE + "px");
+
+  enemies.forEach(enemy => {
+      const itemDiv = document.createElement('div');
+      itemDiv.classList.add('enemy', enemy.type);  // Use item.type as a class for CSS styling
+      itemDiv.style.gridRowStart = enemy.row + 1;
+      itemDiv.style.gridColumnStart = enemy.col + 1;
+      itemsContainer.appendChild(itemDiv);
+  });
+}
+
 document.addEventListener('keydown', function(event) {
   if (event.key === 'e' || event.key === 'E') {  // Check if 'e' or 'E' was pressed
     pickupItems(player);  // Call your pickup function
@@ -292,6 +309,7 @@ function start() {
   createTiles();
   displayTiles();
   displayItems();
+  displayEnemies();
 
   document.addEventListener("keydown", keyDown);
   document.addEventListener("keyup", keyUp);
