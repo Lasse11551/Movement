@@ -5,6 +5,7 @@
 }
 
 #background{
+    position: absolute;
     grid-area: 1/1;
     display: grid;
     grid-template-columns: repeat(var(--GRID_WIDTH), max-content);
@@ -42,23 +43,20 @@
     background-image: url('Characters/tiles/floor_carpet.png');
 }
 
-
-#items{
-    grid-area: 1/1;
-}
 #characters{
     grid-area: 1/1;
 }
 #player{
+    position: absolute;
     width: 30px;
     aspect-ratio: 16 / 20;
-    background-image: url('Characters/Character\ 5.png');
+    background-image: url('Characters/Character\ 11.png');
     background-size: 400% 400%;
     image-rendering: pixelated;
-
-    
-    
+    z-index: 2;
 }
+  
+
 #player.animate {
     animation-duration: .6s;
     animation-timing-function: steps(4);
@@ -130,3 +128,32 @@
 
     translate: var(--regX) var(--regY)
 }
+
+#items {
+    grid-area: 1/1;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--GRID_WIDTH), var(--TILE_SIZE));
+    grid-template-rows: repeat(var(--GRID_HEIGHT), var(--TILE_SIZE));
+    image-rendering: pixelated;
+    z-index: 1;
+    
+  }
+  
+  .item {
+    width: var(--TILE_SIZE);
+  height: var(--TILE_SIZE);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;  /* Ensures that the background covers the div */
+  background-position: center;
+  translate: 0, 0;
+  }
+  
+  .item.gold {
+    background-image: url('Characters/items/gold.png');
+  }
+
+

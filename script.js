@@ -7,8 +7,8 @@ window.addEventListener("load", start);
 const player = {
   x: 0,
   y: 0,
-  regX: 10,
-  regY: 12,
+  regX: 13,
+  regY: 33,
   hitbox: {
     x: 4,
     y: 5,
@@ -27,11 +27,17 @@ const controls = {
   down: false,
 };
 
+const items = [
+  { type: 'gold', row: 1, col: 2, pickedUp: false },
+  { type: 'gold', row: 5, col: 2, pickedUp: false },
+  { type: 'gold', row: 6, col: 5, pickedUp: false },
+];
+
 const tiles = [
   [0,3,3,3,3,3,0,0,0,0,0,0,0,0,0],
   [0,3,5,5,5,3,0,0,0,0,0,0,0,0,0],
   [0,3,5,5,5,3,0,0,0,0,0,0,0,0,0],
-  [0,3,3,5,3,3,0,0,1,0,0,0,0,0,0],
+  [0,3,3,5,3,3,0,0,0,0,0,0,0,0,0],
   [0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
   [0,0,0,1,1,1,1,1,0,0,2,2,2,0,0],
   [0,0,0,0,0,0,1,1,0,0,2,2,2,0,0],
@@ -165,6 +171,23 @@ function movePlayer(deltaTime) {
 
 /* view */
 
+function displayItems() {
+  const itemsContainer = document.querySelector('#items');
+  itemsContainer.style.setProperty("--GRID_WIDTH", GRID_WIDTH);
+  itemsContainer.style.setProperty("--GRID_HEIGHT", GRID_HEIGHT);
+  itemsContainer.style.setProperty("--TILE_SIZE", TILE_SIZE + "px");
+
+  items.forEach(item => {
+    if(!item.pickedUp) {
+      const itemDiv = document.createElement('div');
+      itemDiv.classList.add('item', item.type);  // Use item.type as a class for CSS styling
+      itemDiv.style.gridRowStart = item.row + 1;
+      itemDiv.style.gridColumnStart = item.col + 1;
+      itemsContainer.appendChild(itemDiv);
+    }
+  });
+}
+
 function displayPlayerAtPosition() {
   const visualPlayer = document.querySelector("#player");
   visualPlayer.style.translate = `${player.x - player.regX}px ${player.y - player.regY}px`;
@@ -244,6 +267,7 @@ function start() {
   console.log("javascript is running");
   createTiles();
   displayTiles();
+  displayItems();
 
   document.addEventListener("keydown", keyDown);
   document.addEventListener("keyup", keyUp);
