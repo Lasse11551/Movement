@@ -33,6 +33,10 @@ const items = [
   { type: 'gold', row: 6, col: 5, pickedUp: false },
 ];
 
+const enemies = [
+
+];
+
 const tiles = [
   [0,3,3,3,3,3,0,0,0,0,0,0,0,0,0],
   [0,3,5,5,5,3,0,0,0,0,0,0,0,0,0],
