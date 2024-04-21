@@ -1,0 +1,132 @@
+#gamefield {
+    border: 1px solid chartreuse;
+    width: fit-content;
+    display: grid;
+}
+
+#background{
+    grid-area: 1/1;
+    display: grid;
+    grid-template-columns: repeat(var(--GRID_WIDTH), max-content);
+}
+
+#background .tile {
+    width: var(--TILE_SIZE);
+    aspect-ratio: 1 / 1;
+
+    background-repeat: no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
+
+   
+}
+
+.tile.path {
+    background-image: url('Characters/tiles/path.png');
+}
+
+.tile.grass {
+    background-image: url('Characters/tiles/grass.png');
+}
+
+.tile.water {
+    background-image: url('Characters/tiles/water.png');
+}
+.tile.wall {
+    background-image: url('Characters/tiles/wall.png');
+}
+.tile.floor {
+    background-image: url('Characters/tiles/floor_planks.png');
+}
+.tile.rug {
+    background-image: url('Characters/tiles/floor_carpet.png');
+}
+
+
+#items{
+    grid-area: 1/1;
+}
+#characters{
+    grid-area: 1/1;
+}
+#player{
+    width: 30px;
+    aspect-ratio: 16 / 20;
+    background-image: url('Characters/Character\ 5.png');
+    background-size: 400% 400%;
+    image-rendering: pixelated;
+
+    
+    
+}
+#player.animate {
+    animation-duration: .6s;
+    animation-timing-function: steps(4);
+    animation-iteration-count: infinite;
+}
+#player.down{
+    background-position: 0% 0%;
+    animation-name: down;
+}
+#player.up{
+    background-position: 0% -100%;
+    animation-name: up;
+}
+#player.left{
+    background-position: 0% -200%;
+    animation-name: left;
+}
+#player.right{
+    background-position: 0% -300%;
+    animation-name: right;
+}
+
+
+@keyframes down {
+    from {
+        background-position: 0% 0%;
+    } to {
+        background-position: -400% 0%;
+    }
+}
+@keyframes up {
+    from {
+        background-position: 0% -100%;
+    } to {
+        background-position: -400% -100%;
+    }
+}
+@keyframes left {
+    from {
+        background-position: 0% -200%;
+    } to {
+        background-position: -400% -200%;
+    }
+}
+@keyframes right {
+    from {
+        background-position: 0% -300%;
+    } to {
+        background-position: -400% -300%;
+    }
+}
+
+.hightlight {
+    outline: 2px dashed yellow;
+    translate: 0 0;
+}
+
+.show-rect {
+    outline: 2px solid red;
+}
+
+.show-reg-point::before {
+    content: "";
+    position: absolute;
+    background-color: cyan;
+
+    width: 3px;
+    height: 3px;
+
+    translate: var(--regX) var(--regY)
+}
