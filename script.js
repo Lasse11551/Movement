@@ -5,15 +5,15 @@ window.addEventListener("load", start);
 /* model */
 
 const player = {
-  x: 0,
-  y: 0,
+  x: 23,
+  y: 23,
   regX: 13,
   regY: 33,
   hitbox: {
-    x: 4,
-    y: 5,
-    w: 12,
-    h: 17
+    x: 9,
+    y: 23,
+    w: 13,
+    h: 12
   },
   speed: 100,
   move: false,
@@ -73,13 +73,35 @@ function posFromCoord({row, col}) {
 
 }
 
-function getTilesUnderPlayer(player) {
-  const tiles = [];
+function getTilesUnderPlayer(player, newPos={x: player.x, y: player.y}) {
+  const tileCoords = [];
 
-  const topLeft = {x: player.x - player.regX + player.hitbox.x, y: player.y}
-  const topRight = {x: player.x - player.regX + player.hitbox.x + player.hitbox.w, y: player.y}
-  const bottomLeft = {};
-  const bottomRight = {};
+  const topLeft = {x: newPos.x - player.regX + player.hitbox.x, 
+                   y: newPos.y - player.regY + player.hitbox.y}
+
+  const topRight = {x: newPos.x - player.regX + player.hitbox.x + player.hitbox.w, 
+                    y: newPos.y - player.regY + player.hitbox.y}
+
+  const bottomLeft = {x: newPos.x - player.regX + player.hitbox.x, 
+                      y: newPos.y - player.regY + player.hitbox.y + player.hitbox.h};
+
+  const bottomRight = {x: newPos.x - player.regX + player.hitbox.x + player.hitbox.w, 
+                       y: newPos.y - player.regY + player.hitbox.y + player.hitbox.h};
+
+  const topLeftCoords = coordFromPos(topLeft);
+  const topRightCoords = coordFromPos(topRight);
+  const bottomLeftCoords = coordFromPos(bottomLeft);
+  const bottomRightCoords = coordFromPos(bottomRight);
+  tileCoords.push(topLeftCoords)
+  tileCoords.push(topRightCoords)
+  tileCoords.push(bottomLeftCoords)
+  tileCoords.push(bottomRightCoords)
+  return tileCoords;
+}
+
+function canMovePlayerToPos(player, pos) {
+  const coords = getTilesUnderPlayer(player, pos);
+  return coords.every(canMoveTo)
 }
 
 function keyDown(event) {
@@ -118,8 +140,7 @@ function keyUp(event) {
   /* console.log(controls); */
 }
 
-function canMoveTo(pos) {
-  const {row, col} = coordFromPos(pos);
+function canMoveTo({row, col}) {
 
   if(row < 0 || row >= GRID_HEIGHT ||
      col < 0 || col >= GRID_WIDTH) {
@@ -167,7 +188,7 @@ function movePlayer(deltaTime) {
     player.direction = "down";
     newPos.y += player.speed * deltaTime;
   }
-  if (canMoveTo(newPos)) {
+  if (canMovePlayerToPos(player, newPos)) {
     player.x = newPos.x;
     player.y = newPos.y;
   } else {
@@ -319,23 +340,26 @@ function start() {
 
 //DEBUGING
 
+let hightlightedTiles = [];
+
 function showDebuging() {
   showDebugTileUnderPlayer();
   showDebugPlayerRect();
   showDebugPlayerRegistrationPoint();
+  showDebugPlayerHitbox();
 }
 
 let lastPlayerCoord = {row: 0, col: 0};
 
 function showDebugTileUnderPlayer() {
-  const coord = coordFromPos(player)
+  hightlightedTiles.forEach(unhightlightTile);
 
-  if(coord.row != lastPlayerCoord.row || coord.col != lastPlayerCoord.col) {
-    unhightlightTile(lastPlayerCoord)
-    hightligtTile(coord);
-  }
-  lastPlayerCoord = coord;
+  const tileCoords = getTilesUnderPlayer(player);
+  tileCoords.forEach(hightlightTile)
+
+  hightlightedTiles = tileCoords;
 }
+
 function showDebugPlayerRegistrationPoint() {
   const visualPlayer = document.querySelector("#player")
   if(!visualPlayer.classList.contains("show-reg-point")) {
@@ -353,7 +377,18 @@ function showDebugPlayerRect() {
   }
 }
 
-function hightligtTile({row, col}) {
+function showDebugPlayerHitbox() {
+  const visualPlayer = document.querySelector("#player")
+  visualPlayer.style.setProperty("--hitboxX", player.hitbox.x +"px");
+  visualPlayer.style.setProperty("--hitboxY", player.hitbox.y +"px");
+  visualPlayer.style.setProperty("--hitboxW", player.hitbox.w +"px");
+  visualPlayer.style.setProperty("--hitboxH", player.hitbox.h +"px");
+  if(!visualPlayer.classList.contains("show-hitbox")) {
+    visualPlayer.classList.add("show-hitbox")
+  }
+}
+
+function hightlightTile({row, col}) {
   const visualTiles = document.querySelectorAll("#background .tile")
   const visualTile = visualTiles[row*GRID_WIDTH+col]
 

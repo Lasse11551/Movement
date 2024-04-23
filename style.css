@@ -129,6 +129,16 @@
     translate: var(--regX) var(--regY)
 }
 
+.show-hitbox::after {
+    content: "";
+    position: absolute;
+    width: var(--hitboxW);
+    height: var(--hitboxH);
+    translate: var(--hitboxX) var(--hitboxY);
+
+    outline: 2px solid hotpink;
+}
+
 #items {
     grid-area: 1/1;
     top: 0;
